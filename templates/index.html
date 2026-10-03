@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4th Favorite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="logo" href="/">4TH<span>FAVORITE</span></a>
+
+        <div class="topbar-right">
+            <span class="daily-label">DAILY FILM CHALLENGE</span>
+            <button id="help-button" class="icon-button" aria-label="How to play">?</button>
+        </div>
+    </header>
+
+    <main class="page-container">
+
+        <section class="game-heading">
+            <p class="eyebrow" id="mode-label">THE DAILY FOUR</p>
+
+            <h1 id="page-title">Guess the missing film.</h1>
+
+            <p class="subtitle" id="page-subtitle">
+                One film is missing from this Letterboxd user's Top 4.
+                Use the clues to figure out which one.
+            </p>
+
+            <div class="date-label" id="puzzle-date">
+                Loading today's puzzle...
+            </div>
+        </section>
+
+        <section class="game-layout">
+
+            <div class="main-column">
+
+                <section class="top-four-panel panel">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">LETTERBOXD TOP 4</p>
+                            <h2 id="user-heading">Today's selection</h2>
+                        </div>
+
+                        <span class="top-four-count">01 — 04</span>
+                    </div>
+
+                    <div id="poster-grid" class="poster-grid">
+                        <div class="loading-card"></div>
+                        <div class="loading-card"></div>
+                        <div class="loading-card"></div>
+                        <div class="loading-card"></div>
+                    </div>
+
+                    <p class="poster-caption">
+                        Three films are shown. One is hidden. Can you identify it?
+                    </p>
+                </section>
+
+
+                <section class="guess-panel panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">YOUR GUESS</p>
+                            <h2>Which film is missing?</h2>
+                        </div>
+                    </div>
+
+                    <form id="guess-form" autocomplete="off">
+
+                        <div class="search-wrapper">
+                            <label for="film-search">
+                                Search for a film
+                            </label>
+
+                            <input
+                                type="text"
+                                id="film-search"
+                                placeholder="Start typing a film title..."
+                                autocomplete="off"
+                                aria-autocomplete="list"
+                                aria-controls="search-results"
+                            >
+
+                            <div
+                                id="search-results"
+                                class="search-results"
+                                role="listbox"
+                            ></div>
+                        </div>
+
+                        <input
+                            type="hidden"
+                            id="selected-film-id"
+                        >
+
+                        <div class="guess-actions">
+                            <p
+                                id="guess-feedback"
+                                class="feedback"
+                                aria-live="polite"
+                            ></p>
+
+                            <button
+                                type="submit"
+                                id="guess-button"
+                                class="primary-button"
+                                disabled
+                            >
+                                Submit guess <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+
+                    </form>
+
+
+                    <div id="win-message" class="win-message hidden">
+                        <div class="win-icon">✓</div>
+
+                        <div>
+                            <h3 id="win-title">
+                                Correct answer!
+                            </h3>
+
+                            <p id="win-description">
+                                You found the missing film.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div id="reveal-answer-section" class="reveal-answer-section hidden">
+
+                        <p>
+                            You've used all possible points.
+                            You can still keep guessing, or reveal the answer.
+                        </p>
+
+                        <button
+                            id="reveal-answer-button"
+                            class="secondary-button"
+                            type="button"
+                        >
+                            Reveal Answer
+                        </button>
+
+                    </div>
+
+
+                    <div id="next-film-section" class="next-film-section hidden">
+
+                        <button
+                            id="next-film-button"
+                            class="primary-button"
+                            type="button"
+                        >
+                            Next Film →
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <aside class="side-column">
+
+                <section class="score-panel panel">
+                    <p class="eyebrow">YOUR SCORE</p>
+
+                    <div class="score-number">
+                        <span id="score-value">1000</span>
+                        <small> / 1000</small>
+                    </div>
+
+                    <div class="score-track">
+                        <div
+                            id="score-bar"
+                            class="score-fill"
+                        ></div>
+                    </div>
+
+                    <p class="score-caption">
+                        Reveal fewer clues and avoid wrong guesses to keep more points.
+                    </p>
+                </section>
+
+
+                <section class="clues-panel panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <p class="eyebrow">INVESTIGATION</p>
+                            <h2>Film clues</h2>
+                        </div>
+                    </div>
+
+                    <p class="clue-intro">
+                        Reveal clues one at a time. Each clue costs points.
+                    </p>
+
+                    <div id="clue-list" class="clue-list">
+                        <p class="loading-text">
+                            Loading clues...
+                        </p>
+                    </div>
+
+                </section>
+
+
+                <section class="how-panel panel">
+
+                    <p class="eyebrow">HOW TO PLAY</p>
+
+                    <ol>
+                        <li>Look at the three visible posters.</li>
+                        <li>Reveal clues if you need help.</li>
+                        <li>Wrong guesses cost 10 points.</li>
+                        <li>Search the film database and submit your guess.</li>
+                        <li>Reach 0 points to unlock the answer reveal.</li>
+                    </ol>
+
+                </section>
+
+            </aside>
+
+        </section>
+
+
+        <section class="endless-panel panel">
+
+            <div class="endless-content">
+                <div>
+                    <p class="eyebrow">PLAY MORE</p>
+
+                    <h2>Endless Mode</h2>
+
+                    <p>
+                        Keep playing with a randomly selected Letterboxd user
+                        and a randomly hidden favorite.
+                    </p>
+                </div>
+
+                <button
+                    id="endless-button"
+                    class="secondary-button"
+                    type="button"
+                >
+                    Endless
+                </button>
+            </div>
+
+        </section>
+
+
+        <footer class="page-footer">
+            <span>4TH FAVORITE</span>
+            <span id="footer-text">One puzzle every day.</span>
+        </footer>
+
+    </main>
+
+
+    <div
+        id="help-modal"
+        class="modal hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="help-title"
+    >
+
+        <div class="modal-content">
+
+            <button
+                id="close-help"
+                class="modal-close"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+            <p class="eyebrow">THE RULES</p>
+
+            <h2 id="help-title">
+                How to play
+            </h2>
+
+            <p>
+                Each day, a Letterboxd user's four favorite films are selected.
+                Three posters are visible and one is hidden.
+            </p>
+
+            <p>
+                Use the clues to identify the missing film.
+                Clues reduce your score, and every incorrect guess costs
+                another 10 points.
+            </p>
+
+            <p>
+                If your score reaches zero, you can reveal the answer.
+                You can also continue guessing while at zero.
+            </p>
+
+            <button
+                id="got-it-button"
+                class="primary-button"
+            >
+                Got it
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>
