@@ -4,22 +4,40 @@ import os
 import mysql.connector
 from dotenv import load_dotenv
 
+# Load variables from .env when running locally.
+# Railway uses the variables configured in its service settings.
 load_dotenv()
 
 
+# --------------------------------------------------
+# Database Configuration
+# --------------------------------------------------
+
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "localhost"),
+    "port": int(os.getenv("DB_PORT", "3306")),
     "user": os.getenv("DB_USER", "root"),
     "password": os.getenv("DB_PASSWORD", ""),
     "database": os.getenv("DB_NAME", "cinema_scrape"),
+    "connection_timeout": 20,
 }
 
 
+# --------------------------------------------------
+# Database Connection
+# --------------------------------------------------
+
 def get_connection():
+    """Connect to the MySQL database using the configured settings."""
     return mysql.connector.connect(**DB_CONFIG)
 
 
+# --------------------------------------------------
+# Daily Games Table
+# --------------------------------------------------
+
 def create_daily_games_table():
+    """Create the daily_games table if it does not already exist."""
     connection = get_connection()
 
     try:
